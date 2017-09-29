@@ -45,11 +45,31 @@ public class ShippingStore {
                 case 1:
                     //shippingstore.showPackageOrders();
                     break;
-                case 2:
-//                    System.out.println("\nPlease type description of package with the following pattern:\n"
-//                            + "\n TRACKING #  TYPE   SPECIFICATION   CLASS   WEIGHT   VOLUME\n"
-//                            + "example:\nGFR23 Box Books Retail 9500.00 45\n");
-//                    String inTemp = in.nextLine();
+                case 2:{
+                    System.out.println("\nEnter the type of package (Envelope, "
+                        + "Box, Crate, or Drum): ");
+                    in.nextLine();
+                    String inTemp = in.nextLine();
+                    
+                    if("envelope".equals(inTemp.toLowerCase()))
+                        //send input to envelope class
+                        break; //TAKE OUT ALL BREAK EXC FOR ELSE BREAK
+                    else if("box".equals(inTemp.toLowerCase())){
+                        //send input to box class
+                        break;
+                    }
+                    else if("crate".equals(inTemp.toLowerCase())){
+                        //send input to crate class
+                        break;
+                    }
+                    else if("drum".equals(inTemp.toLowerCase())){
+                        //send input to drum class
+                        break;
+                    }
+                    else{
+                        System.out.println("Incorrect package type entered.");
+                        break; //will send back to menu?
+                    }
 //
 //                    String temp[] = inTemp.split(" ");
 //
@@ -59,7 +79,8 @@ public class ShippingStore {
 //                    }
 
 //                    shippingstore.addOrder(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
-                    break;
+                    //break;
+                }
                 case 3:
 //                    shippingstore.showPackageOrders();
 //
@@ -88,6 +109,18 @@ public class ShippingStore {
                 case 6:
                     break;
                 case 7:
+                    System.out.println("\nEnter the type of user (Employee or Customer): ");
+                    in.nextLine();
+                    String inTemp = in.nextLine();
+                    
+                    if("employee".equals(inTemp.toLowerCase())){
+                        //send input to employee class
+                        break;
+                    }
+                    else if("customer".equals(inTemp.toLowerCase())){
+                        //send input to customer class
+                        break;
+                    }
                     break;
                 case 8:
                     break;
