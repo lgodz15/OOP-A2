@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package shippingstore;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -13,20 +14,20 @@ import java.util.ArrayList;
  * @author lauragodinez
  */
 public class MainClass {
-    private ArrayList<Package> store = new ArrayList<Package>();
-
+    //private ArrayList<Package> store = new ArrayList<Package>();
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
 
         Scanner in = new Scanner(System.in);
 
-        //ShippingStore shippingstore = new ShippingStore();
+        ShippingStore shipStore = new ShippingStore();
+        System.out.println("Welcome to the Shipping Store!");
 
-        String welcomeMessage = "\nWelcome to the Shipping Store database. Choose one of the following functions:\n\n"
+        String welcomeMessage = "Choose one of the following functions:\n\n"
                 + "\t1. Show all existing package orders in the database (sorted by tracking number).\n"
                 + "\t2. Add a new package order to the database.\n"
                 + "\t3. Delete a package order from a database.\n"
@@ -38,12 +39,12 @@ public class MainClass {
                 + "\t9. Show completed shipping transactions."
                 + "\t10.Exit program.";
 
-        System.out.println(welcomeMessage);
-
         int selection = in.nextInt();
         //in.nextLine();
 
         while (selection != 10) {
+
+            System.out.println(welcomeMessage);
 
             switch (selection) {
                 case 1:
@@ -52,28 +53,15 @@ public class MainClass {
                 case 2:{
                     System.out.println("\nEnter the type of package (Envelope, "
                         + "Box, Crate, or Drum): ");
-                    in.nextLine();
                     String inTemp = in.nextLine();
                     
-                    if("envelope".equals(inTemp.toLowerCase()))
-                        //send input to envelope class
-                        break; //TAKE OUT ALL BREAK EXC FOR ELSE BREAK
-                    else if("box".equals(inTemp.toLowerCase())){
-                        //send input to box class
-                        break;
+                    while(!("envelope".equals(inTemp.toLowerCase()) 
+                            ||"box".equals(inTemp.toLowerCase()) 
+                            ||"crate".equals(inTemp.toLowerCase()) 
+                            ||"drum".equals(inTemp.toLowerCase()))){
+                        System.out.println("Incorrect package type entered.");                        
                     }
-                    else if("crate".equals(inTemp.toLowerCase())){
-                        //send input to crate class
-                        break;
-                    }
-                    else if("drum".equals(inTemp.toLowerCase())){
-                        //send input to drum class
-                        break;
-                    }
-                    else{
-                        System.out.println("Incorrect package type entered.");
-                        break; //will send back to menu?
-                    }
+                    shipStore.addPackage(inTemp);
 //
 //                    String temp[] = inTemp.split(" ");
 //
@@ -83,20 +71,20 @@ public class MainClass {
 //                    }
 
 //                    shippingstore.addOrder(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
-                    //break;
+                    break;
                 }
                 case 3:
-//                    shippingstore.showPackageOrders();
-//
-//                    System.out.println("\nPlease enter the tracking # of the package order to delete from the database.\n");
-//                    String orderToDelete = in.nextLine();
-//                    shippingstore.removeOrder(orderToDelete);
+                    shipStore.showPackageOrders();
+
+                    System.out.println("\nPlease enter the tracking # of the package order to delete from the database.\n");
+                    String orderToDelete = in.nextLine();
+                    shipStore.deletePack(orderToDelete);
                     break;
                 case 4:
-//                    System.out.println("\nEnter the Tracking # of the order you wish to see.\n");
-//                    String trackingNum = in.next();
-//                    in.nextLine();
-//                    shippingstore.searchPackageOrder(trackingNum);
+                    System.out.println("\nEnter the Tracking # of the order you wish to see.\n");
+                    String trackingNum = in.next();
+                    in.nextLine();
+                    shipStore.searchPack(trackingNum);
                     break;
                 case 5:
 //                    float high = 0;
