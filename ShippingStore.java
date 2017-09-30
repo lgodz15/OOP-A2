@@ -218,6 +218,9 @@ public class ShippingStore {
             default:
                 break;
         }
+    public void addUser(String userInput){
+        
+    }
     }
     
 }

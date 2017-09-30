@@ -59,18 +59,13 @@ public class MainClass {
                             ||"box".equals(inTemp.toLowerCase()) 
                             ||"crate".equals(inTemp.toLowerCase()) 
                             ||"drum".equals(inTemp.toLowerCase()))){
-                        System.out.println("Incorrect package type entered.");                        
+                        System.out.println("Incorrect package type entered."); 
+                            in = new Scanner(System.in);
+                            inTemp = in.nextLine();
+                        
                     }
                     shipStore.addPackage(inTemp);
-//
-//                    String temp[] = inTemp.split(" ");
-//
-//                    if (temp.length != 6) {
-//                        System.out.println("Not correct number of fields to process.");
-//                        break;
-//                    }
 
-//                    shippingstore.addOrder(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5]);
                     break;
                 }
                 case 3:
@@ -87,18 +82,13 @@ public class MainClass {
                     shipStore.searchPack(trackingNum);
                     break;
                 case 5:
-//                    float high = 0;
-//                    float low = 0;
-//                    
-//                    System.out.println("\nEnter lower-bound weight.\n");
-//                    low = in.nextFloat();
-//                    System.out.println("\nEnter upper-bound weight.\n");
-//                    high = in.nextFloat();
-//                    in.nextLine();
-//                    
-//                    shippingstore.showPackageOrdersRange(low, high);
+                    
                     break;
                 case 6:
+                    System.out.println("Enter the type of user you wish to add: ");
+                    in = new Scanner(System.in);
+                    String userInput = in.nextLine();
+                    shipStore.addUser(userInput);
                     break;
                 case 7:
                     System.out.println("\nEnter the type of user (Employee or Customer): ");
