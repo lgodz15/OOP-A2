@@ -24,7 +24,7 @@ abstract class Package {
         return this.trackNum;
     }
     
-    public String spec(){
+    public String getSpec(){
         return this.spec;
     }
     
