@@ -85,7 +85,7 @@ public class MainClass {
                     shipStore.searchPack(trackingNum);
                     break;
                 case 5:
-                    
+                    shipStore.showUsers();
                     break;
                 case 6:
                     System.out.println("Enter the type of user you wish to add (customer or employee): ");
@@ -106,11 +106,12 @@ public class MainClass {
                     //in.nextLine();
                     int inTemp = in.nextInt();
                     shipStore.changeUser(inTemp);
-
                     break;
                 case 8:
+                    shipStore.completeTransaction();
                     break;
                 case 9:
+                    shipStore.showTransactions();
                     break;
                 case 11:
                     System.out.println(welcomeMessage);

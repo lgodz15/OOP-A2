@@ -54,7 +54,7 @@ public class ShippingStore {
                 if (!temp[4].matches("[0-9]{1,6}")) {
                     System.out.println("Invalid volume:\n"
                     + "The package's volume has to be an integer number between 0 and 999999. ");
-                    wrongI = true;
+                    break;
                 }
                 Box boxPackage = new Box(temp[0], temp[1], temp[2],   
                                     Integer.parseInt(temp[3]), Integer.parseInt(temp[4]));
@@ -119,7 +119,7 @@ public class ShippingStore {
      * particular order.
      *
      */
-    public void showPackageOrders() {
+    public void showPackageOrders(){
         showPackageOrders(packages);
     }
     
@@ -132,21 +132,91 @@ public class ShippingStore {
     private void showPackageOrders(ArrayList<Package> orders) {
 
         System.out.println(" -------------------------------------------------------------------------- ");
-        System.out.println("| Tracking # | Type    | Specification | Class       | Other |");
+        System.out.println("| Tracking # | Type    | Specification | Class       | Other               |");
         System.out.println(" -------------------------------------------------------------------------- ");
         
         //have to sort by trackin number
         //find out how to output type of package
         for (int i = 0; i < orders.size(); i++) {
-            System.out.println(String.format("| %-11s| %-8s| %-14s| %-12s| %-18s|",
+            System.out.print(String.format("| %-11s| %-8s| %-14s| %-12s| ",
                     orders.get(i).getTN(),
                     orders.get(i).getSpec(),
-                    orders.get(i).getMC()
-                ));
+                    orders.get(i).getMC()));
+            if(orders.get(i) instanceof Envelope){
+                //System.out.println((orders.get(i).getH()));
+                System.out.println("Envelope");
+//                Envelope x = orders.get(i);
+            }
+            else if (orders.get(i) instanceof Box){
+//                Box x = orders.get(i);
+                System.out.println("Box");
+            }
+            else if (orders.get(i) instanceof Crate){
+                System.out.println("Crate");
+            }
+            else if(orders.get(i) instanceof Drum){
+                System.out.println("Drum");
+            }
         }
         System.out.println(" --------------------------------------------------------------------------\n");
 
     }    
+    
+    public void showUsers(){
+        System.out.println(" -------------------------------------------------------------------------- ");
+        System.out.println("| User Type | ID    | First Name | Last Name | Other               |");
+        System.out.println(" -------------------------------------------------------------------------- ");
+        
+        //have to sort by trackin number
+        //find out how to output type of package
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i) instanceof Employee){
+                System.out.print("| Employee  ");
+            }
+            else if (users.get(i) instanceof Customer){
+                System.out.print("| Box       ");
+            }
+            System.out.print(String.format("| %-11s| %-14s| %-14s| ",
+                    users.get(i).getID(),
+                    users.get(i).getFN(),
+                    users.get(i).getLN()));
+            if(users.get(i) instanceof Employee){
+                System.out.print("Employee  ");
+                //int ssn = users.get(i).getSSN();
+            }
+            else if (users.get(i) instanceof Customer){
+                System.out.print("Box       ");
+            }
+
+            
+        }
+        System.out.println(" --------------------------------------------------------------------------\n");
+    }
+    
+    public void showTransactions() {
+
+        System.out.println(" -------------------------------------------------------------------------- ");
+        System.out.println("| User ID  | Tracking # | Ship Date | Delivery Date | Cost   | Employee ID  |");
+        System.out.println(" -------------------------------------------------------------------------- ");
+        
+        //have to sort by trackin number
+        //find out how to output type of package
+        for (int i = 0; i < trans.size(); i++) {
+            System.out.print(String.format("| %-11s| %-11s| %-14s| %-14s| %-14s| %-14s|",
+                    trans.get(i).getCID(),
+                    trans.get(i).getTN(),
+                    trans.get(i).getShipD(),
+                    trans.get(i).getDelivD(),
+                    trans.get(i).getCost(),
+                    trans.get(i).getEID()));
+        }
+        System.out.println(" --------------------------------------------------------------------------\n");
+
+    }
+    
+    public void completeTransaction(){
+        
+    }
     
     private int searchPackAL(String trackNum){
         int exist = -1;
