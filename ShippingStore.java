@@ -218,9 +218,36 @@ public class ShippingStore {
             default:
                 break;
         }
-    public void addUser(String userInput){
         
     }
+    
+    public void addUser(String userInput){
+        int id;
+        String fName, lName;
+        Scanner input = new Scanner(System.in);
+        
+        //get random generated ID
+        
+        //get first name and last name from user
+        System.out.println("Enter your first name: ");
+        input.nextLine();
+        fName = input.nextLine();
+        System.out.println("Enter your last name: ");
+        input.nextLine();
+        lName = input.nextLine();
+        
+        switch(userInput){
+            case "employee":
+                
+                break;
+            case "customer":
+                
+                break;
+            default:
+                break;
+        }
+            
     }
+    
     
 }

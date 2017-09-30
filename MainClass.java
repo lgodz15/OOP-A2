@@ -53,15 +53,16 @@ public class MainClass {
                 case 2:{
                     System.out.println("\nEnter the type of package (Envelope, "
                         + "Box, Crate, or Drum): ");
+                    in.nextLine();
                     String inTemp = in.nextLine();
                     
                     while(!("envelope".equals(inTemp.toLowerCase()) 
                             ||"box".equals(inTemp.toLowerCase()) 
                             ||"crate".equals(inTemp.toLowerCase()) 
                             ||"drum".equals(inTemp.toLowerCase()))){
-                        System.out.println("Incorrect package type entered."); 
-                            in = new Scanner(System.in);
-                            inTemp = in.nextLine();
+                        System.out.println("Enter correct package type."); 
+                        in.nextLine();
+                        inTemp = in.nextLine();
                         
                     }
                     shipStore.addPackage(inTemp);
@@ -85,9 +86,17 @@ public class MainClass {
                     
                     break;
                 case 6:
-                    System.out.println("Enter the type of user you wish to add: ");
-                    in = new Scanner(System.in);
+                    System.out.println("Enter the type of user you wish to add (customer or employee): ");
+                    //in = new Scanner(System.in);
                     String userInput = in.nextLine();
+                    
+                    while(!("employee".equals(userInput.toLowerCase()) 
+                            ||"customer".equals(userInput.toLowerCase()))){
+                        System.out.println("Enter correct user type."); 
+                        in.nextLine();
+                        userInput = in.nextLine();
+                        
+                    }
                     shipStore.addUser(userInput);
                     break;
                 case 7:
