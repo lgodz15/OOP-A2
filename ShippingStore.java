@@ -2,6 +2,7 @@ package shippingstore;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  * Will contain all function calls and checks for user input
@@ -218,9 +219,19 @@ public class ShippingStore {
             default:
                 break;
         }
-    public void addUser(String userInput){
-        
+    
     }
+    public void addUser(String userInput){
+        userId = randUserId();
     }
     
+    public int randUserId(){
+        int max = 99999999;
+        int min = 10000000;
+        int id; 
+        Random rand = new Random();
+        id = rand.nextInt(max - min + 1) + min;
+        
+        return id;
+    }
 }
