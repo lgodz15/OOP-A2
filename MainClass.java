@@ -7,6 +7,8 @@ package shippingstore;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 
 /**
@@ -100,18 +102,11 @@ public class MainClass {
                     shipStore.addUser(userInput);
                     break;
                 case 7:
-                    System.out.println("\nEnter the type of user (Employee or Customer): ");
-                    in.nextLine();
-                    String inTemp = in.nextLine();
-                    
-                    if("employee".equals(inTemp.toLowerCase())){
-                        //send input to employee class
-                        break;
-                    }
-                    else if("customer".equals(inTemp.toLowerCase())){
-                        //send input to customer class
-                        break;
-                    }
+                    System.out.println("\nEnter the user ID: ");
+                    //in.nextLine();
+                    int inTemp = in.nextInt();
+                    shipStore.changeUser(inTemp);
+
                     break;
                 case 8:
                     break;
@@ -126,7 +121,7 @@ public class MainClass {
 
             }
 
-            System.out.println("Please enter another command or 'h' to list the commands.\n");
+            System.out.println("Please enter another command or '11' to list the commands.\n");
             selection = in.next().charAt(0);
 
             in.nextLine();

@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Date;
+
 
 /**
  * Will contain all function calls and checks for user input
@@ -11,6 +13,7 @@ import java.util.Random;
 public class ShippingStore {
     private ArrayList<Package> packages = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Transaction> trans = new ArrayList<>();
     
     public ShippingStore(){
         //checks for input data coming in from serializable objects?
@@ -76,17 +79,7 @@ public class ShippingStore {
         if(wrongI){
             return;
         }
-        
-//        if (type.toLowerCase() == "envelope"){
-//            
-//            System.out.println("Enter height (in inches): ");
-//            input = new Scanner(System.in);
-//            int height = input.nextInt();
-//            
-//            System.out.println("Enter the width of your package (in inches):");
-//            input = new Scanner(System.in);
-//            int width = input.nextInt();  
-//        }
+
         
     }
     
@@ -228,7 +221,7 @@ public class ShippingStore {
         int id;
         String fName, lName;
         Scanner input = new Scanner(System.in);
-        
+
         //get random generated ID
         id = randUserId();
         //get first name and last name from user
@@ -238,18 +231,80 @@ public class ShippingStore {
         System.out.println("Enter your last name: ");
         input.nextLine();
         lName = input.nextLine();
-        
+
         switch(userInput){
             case "employee":
-                
+                System.out.println("Please enter in an 8 digit social security number: ");
+                Scanner SSN = new Scanner(System.in);
+                int number = SSN.nextInt();
+                String numberString = Integer.toString(number);
+                while (numberString.length() != 5){
+                    System.out.println("That number is not 8 digits, please try again: ");
+                    SSN = new Scanner(System.in);
+                    number = SSN.nextInt();
+                    numberString = Integer.toString(number);
+                }
+                System.out.println("Please enter a monthly salary: ");
+                SSN = new Scanner(System.in);
+                float salary = SSN.nextFloat();
+
+                System.out.println("Please enter in a 6-digit Bank Account Number: ");
+                SSN = new Scanner(System.in);
+                int account = SSN.nextInt();
+                String accountString = Integer.toString(account);
+                while (accountString.length() != 6){
+                    System.out.println("Incorrect number of digits, try again: ");
+                    SSN = new Scanner(System.in);
+                    account = SSN.nextInt();
+                    accountString = Integer.toString(account);
+                }
+                Employee employeeObject = new Employee(id, fName, lName, number, salary, account);
+                users.add(employeeObject);
                 break;
             case "customer":
-                
+
+                System.out.println("Please enter in an 8 digit phone number: ");
+                Scanner phoneNumber = new Scanner(System.in);
+                String phone = phoneNumber.nextLine();
+                while (phone.length() != 5){
+                    System.out.println("That number is not 8 digits, please try again: ");
+                    phoneNumber = new Scanner(System.in);
+                    phone = phoneNumber.nextLine();
+                }
+    
+                System.out.println("Please enter an address for the customer: ");
+                Scanner address = new Scanner(System.in);
+                String location = address.nextLine();
+
+                Customer customerObject = new Customer(id, fName, lName, phone, location);
+                users.add(customerObject);
                 break;
             default:
                 break;
         }
-            
+    }
+    
+    private int searchUserAL(int ID){
+        int exist = -1;
+        for(int i = 0; i < users.size(); i++){
+            if((users.get(i).getID()) == ID){
+                exist = i;
+                break;
+            } 
+        }
+        
+        if(exist == -1){
+            System.out.println("User with ID " + ID
+            + " not found.");
+        }
+        return exist;
+    }
+    
+    public void changeUser(int ID){
+        int index = searchUserAL(ID);
+        if(index != -1){
+            //prompt for what to change
+        }
     }
     
     public int randUserId(){
