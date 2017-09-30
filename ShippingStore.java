@@ -141,7 +141,9 @@ public class ShippingStore {
         System.out.println(" -------------------------------------------------------------------------- ");
         System.out.println("| Tracking # | Type    | Specification | Class       | Other |");
         System.out.println(" -------------------------------------------------------------------------- ");
-
+        
+        //have to sort by trackin number
+        //find out how to output type of package
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(String.format("| %-11s| %-8s| %-14s| %-12s| %-18s|",
                     orders.get(i).getTN(),
