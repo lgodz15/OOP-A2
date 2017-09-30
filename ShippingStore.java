@@ -9,11 +9,11 @@ import java.util.Scanner;
  */
 public class ShippingStore {
     private ArrayList<Package> packages = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     
     public ShippingStore(){
         //checks for input data coming in from serializable objects?
     }
-<<<<<<< HEAD
 
 
     public void addPackage(String type) throws IOException {
@@ -22,10 +22,6 @@ public class ShippingStore {
 
         inputMSG(typeL); //according to type of package
         
-=======
-    public void addpackage() throws IOException {
-        System.out.println("Please enter the package type you wish to add: ");
->>>>>>> origin/master
         Scanner input = new Scanner(System.in);
         String inTemp = input.nextLine();
 
@@ -41,53 +37,9 @@ public class ShippingStore {
             return; //to main class if any values entered return false
         }
         
-<<<<<<< HEAD
         boolean wrongI = false; //if wrong input for any package specific, return to main
         switch(typeL){
             case "envelope":
-=======
-        if (entry.toLowerCase() == "envelope"){
-            System.out.println("Please enter a 5-digit tracking number");
-            String tracking = input.nextLine();
-            while (tracking.length() != 5){
-                System.out.println("Error! THat is not 5 digits, try again: ");
-                input = new Scanner(System.in);
-                tracking = input.nextLine();
-            }
-            
-            System.out.println("Please enter specification: ");
-            input = new Scanner(System.in);
-            String spec = input.nextLine();
-            //CHECK: will forward slash stay the same with toLowerCase?
-            //CHECK: also do-not-bend
-            while (spec.toLowerCase() != "fragile" &&spec.toLowerCase() != "books" &&
-                  spec.toLowerCase() != "catalogs" && spec.toLowerCase() != "n/a" && 
-                  spec.toLowerCase() != "do-not-bend"){
-                System.out.println("That is not a valid specification, try again: ");
-                input = new Scanner(System.in);
-                spec = input.nextLine();
-            }
-            
-            System.out.println("Enter Mailing class: ");
-            input = new Scanner(System.in);
-            String mailClass = input.nextLine();
-            while (mailClass.toLowerCase() != "first-class" && mailClass.toLowerCase() != "priority" &&
-                  mailClass.toLowerCase() != "retail" && mailClass.toLowerCase() != "ground"
-                  && mailClass.toLowerCase() != "metro" && mailClass.toLowerCase() != "first"){
-                  System.out.println("That is not a valid class, try again: ");
-                  input = new Scanner(System.in);
-                  mailClass = input.nextLine();  
-            }
-            
-            System.out.println("Enter height (in inches): ");
-            input = new Scanner(System.in);
-            int height = input.nextInt();
-            
-            System.out.println("Enter the width of your package (in inches): ");
-            input = new Scanner(System.in);
-            int width = input.nextInt();
-           
->>>>>>> origin/master
                 
                 Envelope envelopePackage = new Envelope(temp[0], temp[1], temp[2],   
                                                 Integer.parseInt(temp[3]), Integer.parseInt(temp[4]));
