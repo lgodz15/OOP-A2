@@ -370,10 +370,56 @@ public class ShippingStore {
         return exist;
     }
     
-    public void changeUser(int ID){
+public void changeUser(int ID){
         int index = searchUserAL(ID);
         if(index != -1){
-            //prompt for what to change
+        //for (int i=0; i<users.size(); i++){
+            if (ID == users.get(index).getID()){
+                if (users.get(index) instanceof Employee){
+                    Employee x = users.get(index);
+                    
+                    System.out.println("What information would you like to change? ");
+                    System.out.println("1) First Name");
+                    System.out.println("2) Last Name");
+                    System.out.println("3) Social Security Number");
+                    System.out.println("4) Monthly Salary");
+                    System.out.println("5) Bank Account Number");
+                    
+                    Scanner selection = new Scanner(System.in);
+                    int userSelection = selection.nextInt();
+                    while (userSelection < 1 && userSelection >5){
+                        System.out.println("That is an invalid selection, try again: ");
+                        selection = new Scanner(System.in);
+                        userSelection = selection.nextInt();
+                    }
+                    
+                    switch (userSelection) {
+                        case 1:
+                            System.out.println("Enter the replacement first name: ");
+                            Scanner newfName = new Scanner(System.in);
+                            String userNewfName = newfName.nextLine();
+                            users.get(i).setfName(userNewfName);
+                            
+                        case 2:
+                            System.out.println("Enter the replacement last name: ");
+                            Scanner newlName = new Scanner(System.in);
+                            String userNewlName = newlName.nextLine();
+                            users.get(i).setlName(userNewlName);
+                            
+                        case 3:
+                            System.out.println("Enter the replacement last name: ");
+                            Scanner newSSN = new Scanner(System.in);
+                            int userNewSSN = newSSN.nextInt();
+                            users.get(x).setSSN(userNewSSN);
+                            
+                        
+                        
+                          
+                            
+                    }
+                } else {
+                }
+            }
         }
     }
     

@@ -31,4 +31,8 @@ class Employee extends User{
     public int getDD(){
         return this.dDep;
     }
+    
+    public void setSSN(int t){
+        this.ssn = t;
+    }
 }

@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shippingstore;
 
-/**
- *
- * @author lauragodinez
- */
+import java.util.ArrayList;
+
 abstract class User {
     private final int id; //GENERATE UNIQUE NUM FOR EACH USER
-    private final String fName;
-    private final String lName;
+    private String fName;
+    private String lName;
+        private ArrayList<User> userArray;
+
     
     public User(int id, String fName, String lName){
         this.id = id;
@@ -30,5 +25,13 @@ abstract class User {
     
     public String getLN(){
         return this.lName;
+    }
+    
+    public void setfName(String t){
+        this.fName = t;
+    }
+    
+    public void setlName(String t){
+        this.lName = t;
     }
 }
