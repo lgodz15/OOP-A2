@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shippingstore;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Will contain all function calls and checks for user input
@@ -15,6 +12,81 @@ public class ShippingStore {
     
     public ShippingStore(){
         //checks for input data coming in from serializable objects?
+    }
+    //"envelope".equals(inTemp.toLowerCase())
+    public void addpackage() throws IOException {
+        System.out.println("Please enter the package type you wish to add: ");
+        Scanner input = new Scanner(System.in);
+        String entry = input.nextLine();
+        while (entry.toLowerCase() != "envelope" && entry.toLowerCase() != "box" && 
+               entry.toLowerCase() != "crate" && entry.toLowerCase() != "drum"){
+              System.out.println("That is not one of the 4 package types, try again: ");
+              input = new Scanner(System.in);
+              entry = input.nextLine();
+        }
+        
+        if (entry.toLowerCase() == "envelope"){
+            System.out.println("Please enter a 5-digit tracking number");
+            String tracking = input.nextLine();
+            while (tracking.length() != 5){
+                System.out.println("Error! THat is not 5 digits, try again: ");
+                input = new Scanner(System.in);
+                tracking = input.nextLine();
+            }
+            
+            System.out.println("Please enter specification: ");
+            input = new Scanner(System.in);
+            String spec = input.nextLine();
+            //CHECK: will forward slash stay the same with toLowerCase?
+            //CHECK: also do-not-bed
+            while (spec.toLowerCase() != "fragile" &&spec.toLowerCase() != "books" &&
+                  spec.toLowerCase() != "catalogs" && spec.toLowerCase() != "n/a" && 
+                  spec.toLowerCase() != "do-not-bend"){
+                System.out.println("That is not a valid specification, try again: ");
+                input = new Scanner(System.in);
+                spec = input.nextLine();
+            }
+            
+            System.out.println("Enter Mailing class: ");
+            input = new Scanner(System.in);
+            String mailClass = input.nextLine();
+            while (mailClass.toLowerCase() != "first-class" && mailClass.toLowerCase() != "priority" &&
+                  mailClass.toLowerCase() != "retail" && mailClass.toLowerCase() != "ground"
+                  && mailClass.toLowerCase() != "metro" && mailClass.toLowerCase() != "first"){
+                  System.out.println("That is not a valid class, try again: ");
+                  input = new Scanner(System.in);
+                  mailClass = input.nextLine();  
+            }
+            
+            System.out.println("Enter height (in inches): ");
+            input = new Scanner(System.in);
+            int height = input.nextFloat();
+            
+            System.out.println("Enter the width of your package (in inches):");
+            input = new Scanner(System.in);
+            int width = input.nextInt();
+           
+                
+         Envelope envelopePackage = new Envelope(tracking, spec, mailClass,   
+                                                height, width);
+         packages.add(envelopePackage);  
+        }
+        
+        if (entry.toLowerCase() == "box"){
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+       
+        
+        
     }
     
     /**
@@ -32,12 +104,8 @@ public class ShippingStore {
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(String.format("| %-11s| %-8s| %-14s| %-12s| %-18s|",
                     orders.get(i).getTN(),
-                    //orders.get(i).getType(),
                     orders.get(i).getSpec(),
                     orders.get(i).getMC()
-                    //String.format("%.2f", orders.get(i).getWeight()),
-                    //Integer.toString(orders.get(i).getVolume())
-                    //the rest will be added according to the TYPE of package
                 ));
         }
         System.out.println(" --------------------------------------------------------------------------\n");
@@ -64,7 +132,6 @@ public class ShippingStore {
         int index = searchPackAL(trackNum);
         if (index != -1) {
             ArrayList<Package> order = new ArrayList<>(1);
-            //order.add(getPackageOrder(index));
             System.out.println("\nHere is the order that matched:\n");
             showPackageOrders(order);
         }
