@@ -13,7 +13,6 @@ public class ShippingStore {
     public ShippingStore(){
         //checks for input data coming in from serializable objects?
     }
-    //"envelope".equals(inTemp.toLowerCase())
     public void addpackage() throws IOException {
         System.out.println("Please enter the package type you wish to add: ");
         Scanner input = new Scanner(System.in);
@@ -38,7 +37,7 @@ public class ShippingStore {
             input = new Scanner(System.in);
             String spec = input.nextLine();
             //CHECK: will forward slash stay the same with toLowerCase?
-            //CHECK: also do-not-bed
+            //CHECK: also do-not-bend
             while (spec.toLowerCase() != "fragile" &&spec.toLowerCase() != "books" &&
                   spec.toLowerCase() != "catalogs" && spec.toLowerCase() != "n/a" && 
                   spec.toLowerCase() != "do-not-bend"){
@@ -60,9 +59,9 @@ public class ShippingStore {
             
             System.out.println("Enter height (in inches): ");
             input = new Scanner(System.in);
-            int height = input.nextFloat();
+            int height = input.nextInt();
             
-            System.out.println("Enter the width of your package (in inches):");
+            System.out.println("Enter the width of your package (in inches): ");
             input = new Scanner(System.in);
             int width = input.nextInt();
            
