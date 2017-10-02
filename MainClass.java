@@ -23,7 +23,7 @@ public class MainClass {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-
+       // System.err.println("ss");
         Scanner in = new Scanner(System.in);
 
         ShippingStore shipStore = new ShippingStore();
@@ -36,11 +36,11 @@ public class MainClass {
                 + "\t4. Search for a package order (given its Tracking #).\n"
                 + "\t5. Show a list of users in the database.\n"
                 + "\t6. Add new user to the database.\n"
-                + "\t7. Update user info (given their id)."
-                + "\t8. Complete a shipping transaction."
-                + "\t9. Show completed shipping transactions."
+                + "\t7. Update user info (given their id).\n"
+                + "\t8. Complete a shipping transaction.\n"
+                + "\t9. Show completed shipping transactions.\n"
                 + "\t10.Exit program.";
-
+        System.out.println(welcomeMessage);
         int selection = in.nextInt();
         //in.nextLine();
 
@@ -50,12 +50,12 @@ public class MainClass {
 
             switch (selection) {
                 case 1:
-                    //shippingstore.showPackageOrders();
+                    shipStore.showPackageOrders();
                     break;
                 case 2:{
                     System.out.println("\nEnter the type of package (Envelope, "
                         + "Box, Crate, or Drum): ");
-                    in.nextLine();
+                  //  in.nextLine();
                     String inTemp = in.nextLine();
                     
                     while(!("envelope".equals(inTemp.toLowerCase()) 
@@ -63,7 +63,7 @@ public class MainClass {
                             ||"crate".equals(inTemp.toLowerCase()) 
                             ||"drum".equals(inTemp.toLowerCase()))){
                         System.out.println("Enter correct package type."); 
-                        in.nextLine();
+                        //in.nextLine();
                         inTemp = in.nextLine();
                         
                     }
@@ -89,13 +89,15 @@ public class MainClass {
                     break;
                 case 6:
                     System.out.println("Enter the type of user you wish to add (customer or employee): ");
-                    //in = new Scanner(System.in);
+                    in = new Scanner(System.in);
                     String userInput = in.nextLine();
                     
                     while(!("employee".equals(userInput.toLowerCase()) 
                             ||"customer".equals(userInput.toLowerCase()))){
                         System.out.println("Enter correct user type."); 
-                        in.nextLine();
+                        //in.nextLine();
+                        //YOU HAVE TO CLEAR in WHENEVER you're going to reuse it
+                        in = new Scanner(System.in);
                         userInput = in.nextLine();
                         
                     }
@@ -103,15 +105,20 @@ public class MainClass {
                     break;
                 case 7:
                     System.out.println("\nEnter the user ID: ");
-                    //in.nextLine();
                     int inTemp = in.nextInt();
+                    String stringTemp = Integer.toString(inTemp);
+                    while (stringTemp.length() != 8){
+                        System.out.println("That is not 8 digits, try again: ");
+                        in = new Scanner(System.in);
+                        inTemp = in.nextInt();
+                        stringTemp = Integer.toString(inTemp);
+                    }
                     shipStore.changeUser(inTemp);
+
                     break;
                 case 8:
-                    shipStore.completeTransaction();
                     break;
                 case 9:
-                    shipStore.showTransactions();
                     break;
                 case 11:
                     System.out.println(welcomeMessage);
@@ -123,7 +130,7 @@ public class MainClass {
             }
 
             System.out.println("Please enter another command or '11' to list the commands.\n");
-            selection = in.next().charAt(0);
+            selection = in.nextInt();//.charAt(0);
 
             in.nextLine();
         }

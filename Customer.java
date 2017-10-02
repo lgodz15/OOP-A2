@@ -10,8 +10,8 @@ package shippingstore;
  * @author lauragodinez
  */
 class Customer extends User{
-    private final String pNum;
-    private final String addr;
+    private String pNum;
+    private String addr;
     Customer(int id, String fn, String ln, String p, String a){
         super(id, fn, ln);
         this.pNum = p;

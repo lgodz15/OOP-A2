@@ -164,7 +164,7 @@ public class ShippingStore {
     
     public void showUsers(){
         System.out.println(" -------------------------------------------------------------------------- ");
-        System.out.println("| User Type | ID    | First Name | Last Name | Other               |");
+        System.out.println("| User Type | ID          | First Name | Last Name       | Other           |");
         System.out.println(" -------------------------------------------------------------------------- ");
         
         //have to sort by trackin number
@@ -174,23 +174,25 @@ public class ShippingStore {
                 System.out.print("| Employee  ");
             }
             else if (users.get(i) instanceof Customer){
-                System.out.print("| Box       ");
+                System.out.print("| Customer  ");
             }
             System.out.print(String.format("| %-11s| %-14s| %-14s| ",
                     users.get(i).getID(),
                     users.get(i).getFN(),
                     users.get(i).getLN()));
             if(users.get(i) instanceof Employee){
-                System.out.print("Employee  ");
+                int tempSocial = users.get(i).getSSN();
+                System.out.print("SSN: " + tempSocial+"\n");
                 //int ssn = users.get(i).getSSN();
             }
             else if (users.get(i) instanceof Customer){
-                System.out.print("Box       ");
+                String tempPhone = users.get(i).getPN();
+                System.out.print("Phone #: " + tempPhone + "\n");
             }
 
             
         }
-        System.out.println(" --------------------------------------------------------------------------\n");
+        System.out.println("--------------------------------------------------------------------------\n");
     }
     
     public void showTransactions() {
@@ -296,10 +298,10 @@ public class ShippingStore {
         id = randUserId();
         //get first name and last name from user
         System.out.println("Enter your first name: ");
-        input.nextLine();
+        //input.nextLine();
         fName = input.nextLine();
         System.out.println("Enter your last name: ");
-        input.nextLine();
+        input = new Scanner(System.in);
         lName = input.nextLine();
 
         switch(userInput){
@@ -308,7 +310,7 @@ public class ShippingStore {
                 Scanner SSN = new Scanner(System.in);
                 int number = SSN.nextInt();
                 String numberString = Integer.toString(number);
-                while (numberString.length() != 5){
+                while (numberString.length() != 8){
                     System.out.println("That number is not 8 digits, please try again: ");
                     SSN = new Scanner(System.in);
                     number = SSN.nextInt();
@@ -333,11 +335,11 @@ public class ShippingStore {
                 break;
             case "customer":
 
-                System.out.println("Please enter in an 8 digit phone number: ");
+                System.out.println("Please enter in an 7 digit phone number: ");
                 Scanner phoneNumber = new Scanner(System.in);
                 String phone = phoneNumber.nextLine();
-                while (phone.length() != 5){
-                    System.out.println("That number is not 8 digits, please try again: ");
+                while (phone.length() != 7){
+                    System.out.println("That number is not 7 digits, please try again: ");
                     phoneNumber = new Scanner(System.in);
                     phone = phoneNumber.nextLine();
                 }
@@ -376,7 +378,7 @@ public void changeUser(int ID){
         //for (int i=0; i<users.size(); i++){
             if (ID == users.get(index).getID()){
                 if (users.get(index) instanceof Employee){
-                    Employee x = users.get(index);
+                    User x = users.get(index);
                     
                     System.out.println("What information would you like to change? ");
                     System.out.println("1) First Name");
@@ -398,21 +400,25 @@ public void changeUser(int ID){
                             System.out.println("Enter the replacement first name: ");
                             Scanner newfName = new Scanner(System.in);
                             String userNewfName = newfName.nextLine();
-                            users.get(i).setfName(userNewfName);
+                            users.get(index).setfName(userNewfName);
+                            break;
                             
                         case 2:
                             System.out.println("Enter the replacement last name: ");
                             Scanner newlName = new Scanner(System.in);
                             String userNewlName = newlName.nextLine();
-                            users.get(i).setlName(userNewlName);
+                            users.get(index).setlName(userNewlName);
+                            break;
                             
                         case 3:
-                            System.out.println("Enter the replacement last name: ");
+                            System.out.println("Enter the replacement SSN: ");
                             Scanner newSSN = new Scanner(System.in);
                             int userNewSSN = newSSN.nextInt();
-                            users.get(x).setSSN(userNewSSN);
+                            users.get(index).setSSN(userNewSSN);//get index
+                            break;
                             
-                        
+                        default:
+                            break;
                         
                           
                             

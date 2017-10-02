@@ -10,9 +10,9 @@ package shippingstore;
  * @author lauragodinez
  */
 class Employee extends User{
-    private final int ssn;
-    private final float monSal;
-    private final int dDep;
+    private int ssn;
+    private float monSal;
+    private int dDep;
     Employee(int id, String fn, String ln, int ssn, float m, int d){
         super(id, fn, ln);
         this.ssn = ssn;
