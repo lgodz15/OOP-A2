@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.Date;
+import java.util.Comparator;
+import java.util.Collections;
 
 
 /**
@@ -22,7 +24,7 @@ public class ShippingStore {
 
     public void addPackage(String type) throws IOException {
         String typeL = type.toLowerCase();
-        System.out.println("\nPlease type description of package with the following pattern:\n");
+        System.out.println("\n Please type description of package with the following pattern:");
 
         inputMSG(typeL); //according to type of package
         
@@ -41,16 +43,23 @@ public class ShippingStore {
             return; //to main class if any values entered return false
         }
         
-        boolean wrongI = false; //if wrong input for any package specific, return to main
+        //boolean wrongI = false; //if wrong input for any package specific, return to main
         switch(typeL){
             case "envelope":
-                
+                if(Integer.parseInt(temp[3]) <= 0 || Integer.parseInt(temp[4]) <= 0){
+                    System.out.println("Invalid Height or Width. Both must be over 0.");
+                    break;
+                }
                 Envelope envelopePackage = new Envelope(temp[0], temp[1], temp[2],   
                                                 Integer.parseInt(temp[3]), Integer.parseInt(temp[4]));
                 packages.add(envelopePackage);  
                 break;
             case "box":
-                
+                if(Integer.parseInt(temp[3]) <= 0){
+                    System.out.println("Invalid Dimension. Must be over 0.");
+                    break;
+                }
+                //check it's not a ridiculous volume
                 if (!temp[4].matches("[0-9]{1,6}")) {
                     System.out.println("Invalid volume:\n"
                     + "The package's volume has to be an integer number between 0 and 999999. ");
@@ -61,13 +70,24 @@ public class ShippingStore {
                 packages.add(boxPackage);
                 break;
             case "crate":
-                
+                if (Float.parseFloat(temp[3]) <= 0) {
+                    System.out.println("Invalid max load weight:\n"
+                    + "The package's weight has to be an integer number between 0 and 999999. ");
+                }
                 Crate cratePackage = new Crate(temp[0], temp[1], temp[2],   
                                     Float.parseFloat(temp[3]), temp[4]);
                 packages.add(cratePackage);
                 break;
             case "drum":
-                
+                String matL = temp[3].toLowerCase();
+                if(!("plastic".equals(matL) || "fiber".equals(matL))){
+                    System.out.println("Incorrect material type. Must be Fiber or Plastic");
+                    break;
+                }
+                if(Float.parseFloat(temp[4]) <= 0){
+                    System.out.println("Invalid Diameter. Must be over 0.");
+                    break;
+                }
                 Drum drumPackage = new Drum(temp[0], temp[1], temp[2],   
                                     temp[3], Float.parseFloat(temp[4]));
                 packages.add(drumPackage);
@@ -76,15 +96,15 @@ public class ShippingStore {
                 break;
         }
         
-        if(wrongI){
-            return;
-        }
+//        if(wrongI){
+//            return;
+//        }
 
         
     }
     
     private boolean checkPackIn(String trackNum, String spec, String mailClass){
-        if (this.searchPackAL(trackNum) != -1) {
+        if (searchPackAL(trackNum) != -1) {
             System.out.println("Package Order already exists in database. \n");
             return false;
         }
@@ -95,16 +115,18 @@ public class ShippingStore {
             return false;
         }
 
-        if (!(spec.equals("Fragile") || spec.equals("Books") || spec.equals("Catalogs")
-            || spec.equals("Do-not-Bend") || spec.toUpperCase().equals("N/A"))) {
+        String specL = spec.toLowerCase();
+        if (!(specL.equals("fragile") || specL.equals("books") || specL.equals("catalogs")
+            || specL.equals("do-not-bend") || specL.toUpperCase().equals("n/a"))) {
             System.out.println("Invalid specification:\n"
                 + "Specification must be one of following: "
                 + "Fragile, Books, Catalogs, Do-not-Bend, N/A.");
             return false;
         }
 
-        if (!(mailClass.equals("First-Class") || mailClass.equals("Priority") || mailClass.equals("Retail")
-            || mailClass.equals("Ground") || mailClass.equals("Metro")) ) {
+        String mailL = mailClass.toLowerCase();
+        if (!(mailL.equals("first-class") || mailL.equals("priority") || mailL.equals("retail")
+            || mailL.equals("ground") || mailL.equals("metro")) ) {
             System.out.println("Invalid Mailing Class:\n"
                 + "Mailing Class must be one of following: "
                 + "First-Class, Priority, Retail, Ground, Metro.");
@@ -120,6 +142,13 @@ public class ShippingStore {
      *
      */
     public void showPackageOrders(){
+        //sort by tracking number here
+        Collections.sort(packages, new Comparator<Package>() {
+            @Override
+            public int compare(Package object1, Package object2) {
+                return object1.getTN().compareTo(object2.getTN());
+        }
+        });
         showPackageOrders(packages);
     }
     
@@ -131,34 +160,39 @@ public class ShippingStore {
      */
     private void showPackageOrders(ArrayList<Package> orders) {
 
-        System.out.println(" -------------------------------------------------------------------------- ");
-        System.out.println("| Tracking # | Type    | Specification | Class       | Other               |");
-        System.out.println(" -------------------------------------------------------------------------- ");
+        System.out.println(" ---------------------------------------------------------------------------------- ");
+        System.out.println("| Tracking # | Specification | Class         | Type    | Other                       |");
+        System.out.println(" ---------------------------------------------------------------------------------- ");
         
         //have to sort by trackin number
         //find out how to output type of package
         for (int i = 0; i < orders.size(); i++) {
-            System.out.print(String.format("| %-11s| %-8s| %-14s| %-12s| ",
+            System.out.print(String.format("| %-11s| %-14s| %-14s| ",
                     orders.get(i).getTN(),
                     orders.get(i).getSpec(),
                     orders.get(i).getMC()));
             if(orders.get(i) instanceof Envelope){
-                //System.out.println((orders.get(i).getH()));
-                System.out.println("Envelope");
-//                Envelope x = orders.get(i);
+                System.out.print("Envelope|");
+                System.out.print(" Height: " + orders.get(i).getH());
+                System.out.println(" Width: " + orders.get(i).getW());
             }
             else if (orders.get(i) instanceof Box){
-//                Box x = orders.get(i);
-                System.out.println("Box");
+                System.out.print("Box     |");
+                System.out.print(" Largest Dimension: " + orders.get(i).getLD());
+                System.out.println(" Volume: " + orders.get(i).getV());
             }
             else if (orders.get(i) instanceof Crate){
-                System.out.println("Crate");
+                System.out.print("Crate   |");
+                System.out.print(" Max Load Weight: " + orders.get(i).getML());
+                System.out.println(" Content: " + orders.get(i).getC());
             }
             else if(orders.get(i) instanceof Drum){
-                System.out.println("Drum");
+                System.out.print("Drum    |");
+                System.out.print(" Material: " + orders.get(i).getM());
+                System.out.println(" Diameter: " + orders.get(i).getD());
             }
         }
-        System.out.println(" --------------------------------------------------------------------------\n");
+        System.out.println("\n --------------------------------------------------------------------------\n");
 
     }    
     
@@ -187,7 +221,9 @@ public class ShippingStore {
             }
             else if (users.get(i) instanceof Customer){
                 String tempPhone = users.get(i).getPN();
+                String addr = users.get(i).getAddress();
                 System.out.print("Phone #: " + tempPhone + "\n");
+                System.out.print("Address: " + addr + "\n");
             }
 
             
@@ -217,7 +253,40 @@ public class ShippingStore {
     }
     
     public void completeTransaction(){
+        System.out.println("Please enter the Customer ID who completed the transaction");
+        Scanner inputID = new Scanner(System.in);
+        int custID = inputID.nextInt();
+        String custIDString = Integer.toString(custID);
+        //boolean flag = true;
+        while (custIDString.length() != 8){
+        try{
+             System.out.println("Please punch in an 8 digit Integer, try again: ");
+             inputID = new Scanner(System.in);
+             custID = inputID.nextInt();
+             custIDString = Integer.toString(custID);
+             int custIDTest=Integer.parseInt(custIDString); 
+             
+           }catch(NumberFormatException e){
+                System.out.println("Please punch in an 8 digit Integer, try again: ");
+                
+           }
         
+        }
+    
+        //while (custIDString.length() != 8){
+            //System.out.println("Customer and Employee ID's are 8 Digits in Length, please try again: ");
+            //inputID = new Scanner(System.in);
+            //custID = inputID.nextInt();
+            //custIDString = Integer.toString(custID);
+        
+           // while (custIDString.length() == 8){
+              //try{
+                  // int custIDTest=Integer.parseInt(custIDString); 
+                // }catch(NumberFormatException e){
+                  //  System.out.println("Please punch in an 8 digit Integer, try again: ");
+                // }
+            //}
+        //} 
     }
     
     private int searchPackAL(String trackNum){
@@ -229,10 +298,6 @@ public class ShippingStore {
             } 
         }
         
-        if(exist == -1){
-            System.out.println("Package with Tracking Number " + trackNum
-            + " not found.");
-        }
         return exist;
     }
     
@@ -241,7 +306,12 @@ public class ShippingStore {
         if (index != -1) {
             ArrayList<Package> order = new ArrayList<>(1);
             System.out.println("\nHere is the order that matched:\n");
+            order.add(packages.get(index));
             showPackageOrders(order);
+        }
+        else{
+            System.out.println("Package with Tracking Number " + trackNum
+            + " not found.");
         }
     }
     
@@ -267,21 +337,21 @@ public class ShippingStore {
         switch (type) {
             case "envelope":
                 System.out.println("\n TRACKING #    SPECIFICATION   CLASS   HEIGHT   WIDTH\n"
-                        + "example:\nGFR23 Books Retail 24 45\n");
+                        + " example: GFR23 Books Retail 24 45\n");
                 break;
             case "box":
                 System.out.println("\n TRACKING #    SPECIFICATION   CLASS   "
                         + "LARGEST DIMENSION   VOLUME\n"
-                        + "example:\nGFR23 Books Retail 45 64\n");
+                        + " example: GFR23 Books Retail 45 64\n");
                 break;
             case "drum":
                 System.out.println("\n TRACKING #    SPECIFICATION   CLASS   MATERIAL   DIAMETER\n"
-                        + "example:\nGFR23 Books Retail PLASTIC 30\n");
+                        + " example: GFR23 Books Retail PLASTIC 30\n");
                 break;
             case "crate":
                 System.out.println("\n TRACKING #    SPECIFICATION   CLASS   "
                         + "MAXIUMUM LOAD WEIGHT   CONTENT\n"
-                        + "example:\nGFR23 Books Retail 100.5 CHAIR\n");
+                        + " example: GFR23 Books Retail 100.5 CHAIR\n");
                 break;
             default:
                 break;
@@ -414,20 +484,95 @@ public void changeUser(int ID){
                             System.out.println("Enter the replacement SSN: ");
                             Scanner newSSN = new Scanner(System.in);
                             int userNewSSN = newSSN.nextInt();
+                            String newSSNString = Integer.toString(userNewSSN);
+                            while (newSSNString.length() != 8){
+                                System.out.println("That number is not 8 digits, please try again: ");
+                                newSSN = new Scanner(System.in);
+                                userNewSSN = newSSN.nextInt();
+                                newSSNString = Integer.toString(userNewSSN);
+                            }
                             users.get(index).setSSN(userNewSSN);//get index
                             break;
                             
-                        default:
-                            break;
-                        
-                          
+                        case 4:
+                            System.out.println("Please enter a monthly salary: ");
+                            Scanner newSal = new Scanner(System.in);
+                            float userNewSalary = newSal.nextFloat();
                             
+                            users.get(index).setSalary(userNewSalary);
+                            break;
+                            
+                        case 5:
+                            System.out.println("Please enter in a replacement 6-digit Bank Account Number: ");
+                            Scanner newBank = new Scanner(System.in);
+                            int newUserBank = newBank.nextInt();
+                            String bankString = Integer.toString(newUserBank);
+                            while (bankString.length() != 6){
+                                System.out.println("Incorrect number of digits, try again: ");
+                                newBank = new Scanner(System.in);
+                                newUserBank = newBank.nextInt();
+                                bankString = Integer.toString(newUserBank);
+                            } 
+                            users.get(index).setBank(newUserBank);
+                        default:
+                            break;     
                     }
-                } else {
-                }
-            }
+                } else if (users.get(index) instanceof Customer) {
+                    
+                    System.out.println("What information would you like to change? ");
+                    System.out.println("1) First Name");
+                    System.out.println("2) Last Name");
+                    System.out.println("3) Phone Number");
+                    System.out.println("4) Address");
+                    
+                    Scanner selection = new Scanner(System.in);
+                    int userSelection = selection.nextInt();
+                    while (userSelection < 1 && userSelection >4){
+                        System.out.println("That is an invalid selection, try again: ");
+                        selection = new Scanner(System.in);
+                        userSelection = selection.nextInt();
+                    } 
+                    switch(userSelection) {
+                        case 1:
+                            System.out.println("Enter the replacement first name: ");
+                            Scanner newfName = new Scanner(System.in);
+                            String userNewfName = newfName.nextLine();
+                            users.get(index).setfName(userNewfName);
+                            break;
+                            
+                        case 2:
+                            System.out.println("Enter the replacement last name: ");
+                            Scanner newlName = new Scanner(System.in);
+                            String userNewlName = newlName.nextLine();
+                            users.get(index).setlName(userNewlName);
+                            break;
+                            
+                        case 3:
+                            System.out.println("Please enter in a replacement 7 digit phone number: ");
+                            Scanner phoneNumber = new Scanner(System.in);
+                            String phone = phoneNumber.nextLine();
+                            while (phone.length() != 7){
+                                System.out.println("That number is not 7 digits, please try again: ");
+                                phoneNumber = new Scanner(System.in);
+                                phone = phoneNumber.nextLine();
+                            }
+                            users.get(index).setPhone(phone);
+                            break;
+                            
+                        case 4:
+                            System.out.println("Please enter a replacement address for the customer: ");
+                            Scanner address = new Scanner(System.in);
+                            String location = address.nextLine();
+                            users.get(index).setAddress(location);
+                        
+                        default:
+                            break;    
+                    }
+       
+            } 
         }
     }
+}
     
     public int randUserId(){
         int max = 99999999;
@@ -438,4 +583,6 @@ public void changeUser(int ID){
 
         return id;
     }
+    
+
 }
