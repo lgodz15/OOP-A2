@@ -25,4 +25,18 @@ class Customer extends User{
     public String getAD(){
         return this.addr;
     }
+    
+    public void setPhone(String pNum){
+            this.pNum=pNum;
+    }
+    
+    public void setAddress(String addr){
+            this.addr=addr;
+    }
+    
+    public String getAddress(){
+          return this.addr;
+    }
+    
+    
 }

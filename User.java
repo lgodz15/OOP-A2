@@ -8,6 +8,9 @@ abstract class User {
     private String lName;
     private int ssn;
     private String pNum;
+    private String addr;
+    private float monSal;
+    private int dDep;
         private ArrayList<User> userArray;
 
     
@@ -41,11 +44,39 @@ abstract class User {
             this.ssn=ssn;
     }
     
+    public void setSalary(float monSal){
+            this.monSal=monSal;
+    }
+    
+    public void setBank(int dDep){
+            this.dDep=dDep;
+    }
+    
+    public void setPhone(String pNum){
+            this.pNum=pNum;
+    }
+    
+    public void setAddress(String addr){
+            this.addr=addr;
+    }
+    
     public int getSSN(){
           return this.ssn;
     }
     
     public String getPN(){
         return this.pNum;
+    }
+    
+    public float getSalary(){
+        return this.monSal;
+    }
+    
+    public int getBank(){
+         return this.dDep;
+    }
+    
+    public String getAddress(){
+          return this.addr;
     }
 }

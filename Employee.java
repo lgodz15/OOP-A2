@@ -32,7 +32,23 @@ class Employee extends User{
         return this.dDep;
     }
     
+    public float getSalary(){
+        return this.monSal;
+    }
+    
     public void setSSN(int t){
         this.ssn = t;
+    }
+    
+    public void setSalary(float monSal){
+            this.monSal=monSal;
+    }
+    
+    public void setBank(int dDep){
+            this.dDep=dDep;
+    }
+    
+    public int getBank(){
+         return this.dDep;
     }
 }
