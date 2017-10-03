@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package shippingstore;
+import java.util.Date;
 
 /**
  *
@@ -21,11 +22,18 @@ abstract class Package {
     private float diam;
     private int height;
     private int width;
+    private int date;        
+    Date now = new Date();
+
     
     public Package(String trackNum, String spec, String mailClass){
         this.trackNum = trackNum;
         this.spec = spec;
         this.mailClass = mailClass;
+    }
+    
+    public String getDate(){
+        return now.toString();
     }
     
     public String getTN(){

@@ -14,18 +14,22 @@ public class Transaction {
 
     private final int cID;
     private final String trackNum;
-    private final Date shipD;
-    private final Date delivD;
+    private final String shipD;
     private final float cost;
     private final int eID;
+    Date now = new Date();
+
     
-    public Transaction(int cID, String trackNum, Date shipD, Date delivD, float cost, int eID){
+    public Transaction(int cID, String trackNum, String shipD, float cost, int eID){
         this.cID = cID;
         this.trackNum = trackNum;
         this.shipD = shipD;
-        this.delivD = delivD;
         this.cost = cost;
         this.eID = eID;
+    }
+    
+    public String getDelivD(){
+        return now.toString();
     }
     
     public int getCID(){
@@ -36,13 +40,10 @@ public class Transaction {
         return this.trackNum;
     }
     
-    public Date getShipD(){
+    public String getShipD(){
         return this.shipD;
     }
     
-    public Date getDelivD(){
-        return this.delivD;
-    }
     
     public float getCost(){
         return this.cost;
