@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.io.Serializable;
 import java.io.*;
+import java.util.InputMismatchException;
 
 
 /**
@@ -293,22 +294,35 @@ public class ShippingStore implements Serializable {
     }
     
     public void completeTransaction(){
-        
-        System.out.println("Please enter the Customer ID who completed the transaction");
-        Scanner inputID = new Scanner(System.in);
+       
         String packageNumber = ""; 
         float packageCost = 0;
         int employID = 0;
-        
-        int custID = inputID.nextInt();
-        String custIDString = Integer.toString(custID);
-        while (custIDString.length() != 8 || !custIDString.matches("[0-9]+")){
-            System.out.println("Error! Please punch in an 8-digit number! Try again: ");
-            inputID = new Scanner(System.in);
-            custID = inputID.nextInt();
-            custIDString = Integer.toString(custID);
-        } 
-        
+        Scanner inputID = new Scanner(System.in);
+        int custID=0;
+        String custIDString = ""; //= Integer.toString(custID);
+        boolean goodint=false;
+       
+        while(goodint==false || !custIDString.matches("[0-9]+") || custIDString.length() != 8){
+        try {
+            System.out.println("Please enter the Customer ID who completed the transaction");
+            
+           custID=inputID.nextInt();
+           custIDString = Integer.toString(custID);
+           if(custIDString.length() != 8)
+           {
+                System.out.println("Error! Must be 8 digits! "); 
+           }
+         
+           goodint=true;
+            
+        } catch (InputMismatchException exception) 
+        { 
+            System.out.println("Integers only, please."); 
+        }
+          inputID.nextLine();//HOW does this stop the loop?
+       }
+
         int packIndex = 0;
         for (int i = 0; i < users.size(); i++){
                 if (users.get(i).getID() == custID){
@@ -325,51 +339,84 @@ public class ShippingStore implements Serializable {
                         if (packageNumber.equals(packageObject.getTN())){
                             packIndex = b;
                             System.out.println("Package found! Added to Transactions");
-                        } else {
-                            System.out.println("Package not found!");
-                            return;
-                        }
-                    }
-                    System.out.println("Please enter the cost of the package: ");
+                        }   
+    
                     inputID = new Scanner(System.in);
-                    packageCost = inputID.nextFloat();
-                    String costString = Float.toString(packageCost);
-                    //USE TRY & CATCH HERE
-                    while (!costString.matches("[0-9]+")){
-                        System.out.println("Error! Please punch in only numbers for cost! Try again: ");
+                    boolean goodFloat = false;
+                    
+                    while (goodFloat == false){
+                      try{
+                        System.out.println("Please enter the cost of the package(use 2 decimal places): ");
+   
                         inputID = new Scanner(System.in);
                         packageCost = inputID.nextFloat();
-                        costString = Float.toString(packageCost);
-                    }
-                    System.out.println("Please enter in Employee ID who completed Sale: ");
+                        
+                        goodFloat = true;
+                       
+                      }
+                      catch (InputMismatchException exception) {
+                          System.out.println("Error! Please punch in only numbers for cost! Try again: ");
+                      }
+                        inputID.nextLine();
+                    } 
+                    
                     inputID = new Scanner(System.in);
-                    employID = inputID.nextInt();
-                    String employIDString = Integer.toString(employID);
-                    while (employIDString.length() != 8 || !employIDString.matches("[0-9]+")){
-                        System.out.println("Error! Please punch in an 8-digit number! Try again: ");
-                        inputID = new Scanner(System.in);
-                        employID = inputID.nextInt();
-                        employIDString = Integer.toString(employID); 
-                        } 
+                   
+                    String employIDString = ""; 
+                    boolean goodEmploy = false;
+                    
+                    while (goodEmploy == false){
+                        try{
+                           System.out.println("Please enter in Employee ID who completed Sale: ");
+                           inputID = new Scanner(System.in);
+                           employID = inputID.nextInt();
+                           employIDString = Integer.toString(employID); 
+                           while(employIDString.length() != 8)
+                             {
+                                System.out.println("Error! Must be 8 digits! Try again: ");
+                                inputID = new Scanner(System.in);
+                                employID = inputID.nextInt();
+                                employIDString = Integer.toString(employID);
+                             }
+                           goodEmploy = true;
+                        } catch (InputMismatchException exception) {
+                            System.out.println("Error! Please punch in an 8-digit number! Try again: ");
+                          }
+                        inputID.nextLine();
+                    } 
                     for (int j = 0; j < users.size(); j++){
                         User userObject2 = users.get(j);
                         if (userObject2.getID() == employID){
                             System.out.println("Employee Found! Added to Transactions!");
-                        } else {
-                            System.out.println("Employee not found!");
-                            return;
-                        } 
+                        }     
                     }
+                      System.out.println("Employee not found!");
+                      System.out.println("Press enter to continue");
+                        try {
+                              System.in.read();
+                              return;
+                        } catch (IOException ex) {
+                   
+                          }
+                   }
+                    System.out.println("Package not found!");
+                    System.out.println("Press enter to continue");
+                        try {
+                              System.in.read();
+                              return;
+                        } catch (IOException ex) {
+                   
+                          }   
                 }    
         }
           System.out.println("Customer not found!");
-                 System.out.println("Press enter to continue");
-               try {
+          System.out.println("Press enter to continue");
+            try {
                    System.in.read();
                    return;
-               } catch (IOException ex) {
-                   
-               } 
+                } catch (IOException ex) {
+   
+                  } 
         Transaction transactionObject = new Transaction(custID, packageNumber, 
                 packages.get(packIndex).getDate(), packageCost, employID);
         trans.add(transactionObject);
@@ -450,11 +497,10 @@ public class ShippingStore implements Serializable {
         int id;
         String fName, lName;
         Scanner input = new Scanner(System.in);
-
         //get random generated ID
         id = randUserId();
-        //get first name and last name from user
         System.out.println("Enter your first name: ");
+        input = new Scanner(System.in);
         fName = input.nextLine();
         System.out.println("Enter your last name: ");
         input = new Scanner(System.in);
@@ -462,30 +508,67 @@ public class ShippingStore implements Serializable {
 
         switch(userInput.toLowerCase()){
             case "employee":
-                System.out.println("Please enter in an 8 digit social security number: ");
-                Scanner SSN = new Scanner(System.in);
-                int number = SSN.nextInt();
-                String numberString = Integer.toString(number);
-                while (numberString.length() != 8){
-                    System.out.println("That number is not 8 digits, please try again: ");
+                 Scanner SSN = new Scanner(System.in);
+                 int number = 0;//newSSN.nextInt();
+                 String numberString = ""; //
+                 boolean goodSSN = false;
+                 while (goodSSN == false){
+                   try{
+                     System.out.println("Enter the SSN: ");
+                     SSN = new Scanner(System.in);
+                     number = SSN.nextInt();
+                     numberString = Integer.toString(number);
+                      while (numberString.length() != 9){
+                        System.out.println("That number is not 9 digits, please try again: ");
+                        SSN = new Scanner(System.in);
+                        number = SSN.nextInt();
+                        numberString = Integer.toString(number);
+                      }
+                      goodSSN = true;         
+                   } catch (InputMismatchException exception){
+                       System.out.println("Only numbers please, try again: ");
+                     }
+                    SSN.nextLine();
+                 }
+                float salary = 0; 
+                boolean goodSalary = false;
+                while (goodSalary == false){
+                  try{
+                    System.out.println("Please enter a monthly salary: "); 
                     SSN = new Scanner(System.in);
-                    number = SSN.nextInt();
-                    numberString = Integer.toString(number);
+                    salary = SSN.nextFloat();
+                                   
+                    goodSalary = true;
+                  }
+                  catch(InputMismatchException exception){
+                     System.out.println("Only numbers please, try again: ");
+                  }
+                 SSN.nextLine();
+                } 
+                int account = 0;
+                String accountString = "";
+                boolean goodBank = false;
+                            
+                while (goodBank == false){
+                 try{
+                   System.out.println("Please enter in a replacement 6-digit Bank Account Number: ");
+                   SSN = new Scanner(System.in);
+                   account = SSN.nextInt();
+                   accountString = Integer.toString(account);
+                   while (accountString.length() != 6){
+                      System.out.println("Incorrect number of digits, try again: ");
+                      SSN = new Scanner(System.in);
+                      account = SSN.nextInt();
+                      accountString = Integer.toString(account);
+                   }
+                   goodBank = true;
+                 }
+                 catch (InputMismatchException exception){
+                    System.out.println("Numbers only please, try again: ");
+                 }
+                  SSN.nextLine();
                 }
-                System.out.println("Please enter a monthly salary: ");
-                SSN = new Scanner(System.in);
-                float salary = SSN.nextFloat();
-
-                System.out.println("Please enter in a 6-digit Bank Account Number: ");
-                SSN = new Scanner(System.in);
-                int account = SSN.nextInt();
-                String accountString = Integer.toString(account);
-                while (accountString.length() != 6){
-                    System.out.println("Incorrect number of digits, try again: ");
-                    SSN = new Scanner(System.in);
-                    account = SSN.nextInt();
-                    accountString = Integer.toString(account);
-                }
+         
                 Employee employeeObject = new Employee(id, fName, lName, number, salary, account);
                 users.add(employeeObject);
                 break;
@@ -567,37 +650,81 @@ public void changeUser(int ID){
                             break;
                             
                         case 3:
-                            System.out.println("Enter the replacement SSN: ");
+                            
                             Scanner newSSN = new Scanner(System.in);
-                            int userNewSSN = newSSN.nextInt();
-                            String newSSNString = Integer.toString(userNewSSN);
-                            while (newSSNString.length() != 8){
-                                System.out.println("That number is not 8 digits, please try again: ");
+                            int userNewSSN = 0;//newSSN.nextInt();
+                            String newSSNString = ""; //
+                            boolean goodnewSSN = false;
+                            while (goodnewSSN == false){
+                               try{
+                                System.out.println("Enter the replacement SSN: ");
                                 newSSN = new Scanner(System.in);
                                 userNewSSN = newSSN.nextInt();
                                 newSSNString = Integer.toString(userNewSSN);
+                                while (newSSNString.length() != 9){
+                                   System.out.println("That number is not 9 digits, please try again: ");
+                                   newSSN = new Scanner(System.in);
+                                   userNewSSN = newSSN.nextInt();
+                                   newSSNString = Integer.toString(userNewSSN);
+                                }
+                                goodnewSSN = true;
+                              
+                               }
+                               catch (InputMismatchException exception){
+                                  System.out.println("Only numbers please, try again: ");
+                               }
+                               newSSN.nextLine();
                             }
                             users.get(index).setSSN(userNewSSN);//get index
                             break;
                             
                         case 4:
-                            System.out.println("Please enter a monthly salary: ");
+                            
                             Scanner newSal = new Scanner(System.in);
-                            float userNewSalary = newSal.nextFloat();
+                            float userNewSalary = 0; 
+                            boolean goodNewSalary = false;
+                            while (goodNewSalary == false){
+                                try{
+                                   System.out.println("Please enter a monthly salary: "); 
+                                   newSal = new Scanner(System.in);
+                                   userNewSalary = newSal.nextFloat();
+                                   
+                                   goodNewSalary = true;
+                                }
+                                catch(InputMismatchException exception){
+                                   System.out.println("Only numbers please, try again: ");
+                                }
+                                newSal.nextLine();
+                            }
                             
                             users.get(index).setSalary(userNewSalary);
                             break;
                             
                         case 5:
-                            System.out.println("Please enter in a replacement 6-digit Bank Account Number: ");
+                            
                             Scanner newBank = new Scanner(System.in);
-                            int newUserBank = newBank.nextInt();
-                            String bankString = Integer.toString(newUserBank);
-                            while (bankString.length() != 6){
-                                System.out.println("Incorrect number of digits, try again: ");
-                                newBank = new Scanner(System.in);
-                                newUserBank = newBank.nextInt();
-                                bankString = Integer.toString(newUserBank);
+                            int newUserBank = 0;
+                            String bankString = "";
+                            boolean goodUserBank = false;
+                            
+                            while (goodUserBank == false){
+                                try{
+                                    System.out.println("Please enter in a replacement 6-digit Bank Account Number: ");
+                                    newBank = new Scanner(System.in);
+                                    newUserBank = newBank.nextInt();
+                                    bankString = Integer.toString(newUserBank);
+                                    while (bankString.length() != 6){
+                                       System.out.println("Incorrect number of digits, try again: "); 
+                                       newBank = new Scanner(System.in);
+                                       newUserBank = newBank.nextInt();
+                                       bankString = Integer.toString(newUserBank);
+                                    }
+                                    goodUserBank = true;
+                                }
+                                catch (InputMismatchException exception){
+                                    System.out.println("Numbers only please, try again: ");
+                                }
+                               newBank.nextLine();
                             } 
                             users.get(index).setBank(newUserBank);
                         default:
