@@ -117,8 +117,10 @@ public class MainClass {
 
                     break;
                 case 8:
+                    shipStore.completeTransaction();
                     break;
                 case 9:
+                    shipStore.showTransactions();
                     break;
                 case 11:
                     System.out.println(welcomeMessage);
@@ -136,7 +138,7 @@ public class MainClass {
         }
 
         in.close();
-        //shippingstore.flush();
+        shipStore.flush();
         
         System.out.println("Done!");
     }

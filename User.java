@@ -1,8 +1,9 @@
 package shippingstore;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-abstract class User {
+abstract class User implements Serializable{
     private final int id; //GENERATE UNIQUE NUM FOR EACH USER
     private String fName;
     private String lName;

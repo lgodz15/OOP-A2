@@ -5,12 +5,13 @@
  */
 package shippingstore;
 import java.util.Date;
+import java.io.Serializable;
 
 /**
  *
  * @author lauragodinez
  */
-public class Transaction {
+public class Transaction implements Serializable{
 
     private final int cID;
     private final String trackNum;

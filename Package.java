@@ -5,12 +5,12 @@
  */
 package shippingstore;
 import java.util.Date;
-
+import java.io.Serializable;
 /**
  *
  * @author lauragodinez
  */
-abstract class Package {
+abstract class Package implements Serializable{
     private final String trackNum;
     private final String spec;
     private final String mailClass;

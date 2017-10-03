@@ -3,22 +3,64 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
-import java.util.Date;
 import java.util.Comparator;
 import java.util.Collections;
+import java.io.Serializable;
+import java.io.*;
 
 
 /**
  * Will contain all function calls and checks for user input
  * @author lauragodinez
  */
-public class ShippingStore {
+public class ShippingStore implements Serializable {
     private ArrayList<Package> packages = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Transaction> trans = new ArrayList<>();
     
     public ShippingStore(){
         //checks for input data coming in from serializable objects?
+        try {
+         FileInputStream fileIn = new FileInputStream("packages.ser");
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         packages = (ArrayList<Package>) in.readObject();
+         in.close();
+         fileIn.close();
+        }
+        catch(IOException i) {
+         System.out.println("packages.ser file not found");
+        }
+        catch(ClassNotFoundException c) {
+         System.out.println("Package class not found");
+        }
+        
+        try {
+         FileInputStream fileIn = new FileInputStream("users.ser");
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         users = (ArrayList<User>) in.readObject();
+         in.close();
+         fileIn.close();
+        }
+        catch(IOException i) {
+         System.out.println("users.ser file not found");
+        }
+        catch(ClassNotFoundException c) {
+         System.out.println("User class not found");
+        }
+        
+        try {
+         FileInputStream fileIn = new FileInputStream("transactions.ser");
+         ObjectInputStream in = new ObjectInputStream(fileIn);
+         trans = (ArrayList<Transaction>) in.readObject();
+         in.close();
+         fileIn.close();
+        }
+        catch(IOException i) {
+         System.out.println("transactions.ser file not found");
+        }
+        catch(ClassNotFoundException c) {
+         System.out.println("Transaction class not found");
+        }
     }
 
 
@@ -43,7 +85,6 @@ public class ShippingStore {
             return; //to main class if any values entered return false
         }
         
-        //boolean wrongI = false; //if wrong input for any package specific, return to main
         switch(typeL){
             case "envelope":
                 if(Integer.parseInt(temp[3]) <= 0 || Integer.parseInt(temp[4]) <= 0){
@@ -96,9 +137,6 @@ public class ShippingStore {
                 break;
         }
         
-//        if(wrongI){
-//            return;
-//        }
 
         
     }
@@ -216,14 +254,16 @@ public class ShippingStore {
                     users.get(i).getLN()));
             if(users.get(i) instanceof Employee){
                 int tempSocial = users.get(i).getSSN();
-                System.out.print("SSN: " + tempSocial+"\n");
+                float tempMonthlySalary = users.get(i).getSalary();
+                int tempBankAccount = users.get(i).getBank();
+                System.out.print("SSN: " + tempSocial + ", Salary: $" + tempMonthlySalary + ", Bank Account: " + tempBankAccount + "\n");
                 //int ssn = users.get(i).getSSN();
             }
             else if (users.get(i) instanceof Customer){
                 String tempPhone = users.get(i).getPN();
                 String addr = users.get(i).getAddress();
-                System.out.print("Phone #: " + tempPhone + "\n");
-                System.out.print("Address: " + addr + "\n");
+                System.out.print("Phone #: " + tempPhone + ", Address: " + addr + "\n");
+                //System.out.print("Address: " + addr + "\n");
             }
 
             
@@ -253,40 +293,87 @@ public class ShippingStore {
     }
     
     public void completeTransaction(){
+        
         System.out.println("Please enter the Customer ID who completed the transaction");
         Scanner inputID = new Scanner(System.in);
+        String packageNumber = ""; 
+        float packageCost = 0;
+        int employID = 0;
+        
         int custID = inputID.nextInt();
         String custIDString = Integer.toString(custID);
-        //boolean flag = true;
-        while (custIDString.length() != 8){
-        try{
-             System.out.println("Please punch in an 8 digit Integer, try again: ");
-             inputID = new Scanner(System.in);
-             custID = inputID.nextInt();
-             custIDString = Integer.toString(custID);
-             int custIDTest=Integer.parseInt(custIDString); 
-             
-           }catch(NumberFormatException e){
-                System.out.println("Please punch in an 8 digit Integer, try again: ");
-                
-           }
+        while (custIDString.length() != 8 || !custIDString.matches("[0-9]+")){
+            System.out.println("Error! Please punch in an 8-digit number! Try again: ");
+            inputID = new Scanner(System.in);
+            custID = inputID.nextInt();
+            custIDString = Integer.toString(custID);
+        } 
         
+        int packIndex = 0;
+        for (int i = 0; i < users.size(); i++){
+                if (users.get(i).getID() == custID){
+                    System.out.println("Please enter in a Package Tracking Number: ");
+                    inputID = new Scanner(System.in);
+                    packageNumber = inputID.nextLine();
+                    while (packageNumber.length() != 5){
+                        System.out.println("Error! Tracking is 5 characters ! Try again: ");
+                        inputID = new Scanner(System.in);
+                        packageNumber = inputID.nextLine();
+                    }
+                    for (int b = 0; b < packages.size(); b++) {
+                        Package packageObject = packages.get(b);
+                        if (packageNumber.equals(packageObject.getTN())){
+                            packIndex = b;
+                            System.out.println("Package found! Added to Transactions");
+                        } else {
+                            System.out.println("Package not found!");
+                            return;
+                        }
+                    }
+                    System.out.println("Please enter the cost of the package: ");
+                    inputID = new Scanner(System.in);
+                    packageCost = inputID.nextFloat();
+                    String costString = Float.toString(packageCost);
+                    //USE TRY & CATCH HERE
+                    while (!costString.matches("[0-9]+")){
+                        System.out.println("Error! Please punch in only numbers for cost! Try again: ");
+                        inputID = new Scanner(System.in);
+                        packageCost = inputID.nextFloat();
+                        costString = Float.toString(packageCost);
+                    }
+                    System.out.println("Please enter in Employee ID who completed Sale: ");
+                    inputID = new Scanner(System.in);
+                    employID = inputID.nextInt();
+                    String employIDString = Integer.toString(employID);
+                    while (employIDString.length() != 8 || !employIDString.matches("[0-9]+")){
+                        System.out.println("Error! Please punch in an 8-digit number! Try again: ");
+                        inputID = new Scanner(System.in);
+                        employID = inputID.nextInt();
+                        employIDString = Integer.toString(employID); 
+                        } 
+                    for (int j = 0; j < users.size(); j++){
+                        User userObject2 = users.get(j);
+                        if (userObject2.getID() == employID){
+                            System.out.println("Employee Found! Added to Transactions!");
+                        } else {
+                            System.out.println("Employee not found!");
+                            return;
+                        } 
+                    }
+                }    
         }
-    
-        //while (custIDString.length() != 8){
-            //System.out.println("Customer and Employee ID's are 8 Digits in Length, please try again: ");
-            //inputID = new Scanner(System.in);
-            //custID = inputID.nextInt();
-            //custIDString = Integer.toString(custID);
-        
-           // while (custIDString.length() == 8){
-              //try{
-                  // int custIDTest=Integer.parseInt(custIDString); 
-                // }catch(NumberFormatException e){
-                  //  System.out.println("Please punch in an 8 digit Integer, try again: ");
-                // }
-            //}
-        //} 
+          System.out.println("Customer not found!");
+                 System.out.println("Press enter to continue");
+               try {
+                   System.in.read();
+                   return;
+               } catch (IOException ex) {
+                   
+               } 
+        Transaction transactionObject = new Transaction(custID, packageNumber, 
+                packages.get(packIndex).getDate(), packageCost, employID);
+        trans.add(transactionObject);
+        //REMOVE packageNumber from package list
     }
     
     private int searchPackAL(String trackNum){
@@ -368,13 +455,12 @@ public class ShippingStore {
         id = randUserId();
         //get first name and last name from user
         System.out.println("Enter your first name: ");
-        //input.nextLine();
         fName = input.nextLine();
         System.out.println("Enter your last name: ");
         input = new Scanner(System.in);
         lName = input.nextLine();
 
-        switch(userInput){
+        switch(userInput.toLowerCase()){
             case "employee":
                 System.out.println("Please enter in an 8 digit social security number: ");
                 Scanner SSN = new Scanner(System.in);
@@ -584,5 +670,43 @@ public void changeUser(int ID){
         return id;
     }
     
+    public void flush(){
+        //serializing ArrayLists
+        try {
+         FileOutputStream fileOut = new FileOutputStream("packages.ser");
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(packages);
+         out.close();
+         fileOut.close();
+         System.out.printf("Serialized data is saved as packages.ser\n");
+        }
+        catch(IOException i) {
+         i.printStackTrace();
+        }
+        
+        try {
+         FileOutputStream fileOut = new FileOutputStream("users.ser");
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(users);
+         out.close();
+         fileOut.close();
+         System.out.printf("Serialized data is saved as users.ser\n");
+        }
+        catch(IOException i) {
+         i.printStackTrace();
+        }
+        
+        try {
+         FileOutputStream fileOut = new FileOutputStream("transactions.ser");
+         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+         out.writeObject(trans);
+         out.close();
+         fileOut.close();
+         System.out.printf("Serialized data is saved as transactions.ser\n");
+        }
+        catch(IOException i) {
+         i.printStackTrace();
+        }
+    }
 
 }
