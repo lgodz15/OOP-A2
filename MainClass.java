@@ -12,14 +12,14 @@ import java.util.Date;
 
 
 /**
- * Main class 
- * @author lauragodinez
+ * Main class, main loop for shipping store database
  */
 public class MainClass {
-    //private ArrayList<Package> store = new ArrayList<Package>();
     
     /**
+     * Contains main loop to call functions for shipping store menu
      * @param args the command line arguments
+     * @throws IOException
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
@@ -42,7 +42,6 @@ public class MainClass {
                 + "\t10.Exit program.";
         System.out.println(welcomeMessage);
         int selection = in.nextInt();
-        //in.nextLine();
 
         while (selection != 10) {
 
@@ -55,7 +54,6 @@ public class MainClass {
                 case 2:{
                     System.out.println("\nEnter the type of package (Envelope, "
                         + "Box, Crate, or Drum): ");
-                  //  in.nextLine();
                     String inTemp = in.nextLine();
                     
                     while(!("envelope".equals(inTemp.toLowerCase()) 
@@ -63,12 +61,10 @@ public class MainClass {
                             ||"crate".equals(inTemp.toLowerCase()) 
                             ||"drum".equals(inTemp.toLowerCase()))){
                         System.out.println("Enter correct package type."); 
-                        //in.nextLine();
                         inTemp = in.nextLine();
                         
                     }
                     shipStore.addPackage(inTemp);
-
                     break;
                 }
                 case 3:
@@ -95,8 +91,6 @@ public class MainClass {
                     while(!("employee".equals(userInput.toLowerCase()) 
                             ||"customer".equals(userInput.toLowerCase()))){
                         System.out.println("Enter correct user type."); 
-                        //in.nextLine();
-                        //YOU HAVE TO CLEAR in WHENEVER you're going to reuse it
                         in = new Scanner(System.in);
                         userInput = in.nextLine();
                         
@@ -114,7 +108,6 @@ public class MainClass {
                         stringTemp = Integer.toString(inTemp);
                     }
                     shipStore.changeUser(inTemp);
-
                     break;
                 case 8:
                     shipStore.completeTransaction();
@@ -128,11 +121,10 @@ public class MainClass {
                 default:
                     System.out.println("That is not a recognized command. Please enter another command or 11 to list the commands.");
                     break;
-
             }
 
             System.out.println("Please enter another command or '11' to list the commands.\n");
-            selection = in.nextInt();//.charAt(0);
+            selection = in.nextInt();
 
             in.nextLine();
         }
@@ -140,7 +132,7 @@ public class MainClass {
         in.close();
         shipStore.flush();
         
-        System.out.println("Done!");
+        System.out.println("\nDone!");
     }
     
 }

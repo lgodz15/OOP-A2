@@ -11,16 +11,18 @@ import java.util.InputMismatchException;
 
 
 /**
- * Will contain all function calls and checks for user input
- * @author lauragodinez
+ * ShippingStore contains all function calls and checks for user input
  */
 public class ShippingStore implements Serializable {
     private ArrayList<Package> packages = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Transaction> trans = new ArrayList<>();
     
+    /**
+     * ShippingStore constructor which checks if there is previous input from 
+     * .ser files coming into packages, users, or transactions array lists
+     */
     public ShippingStore(){
-        //checks for input data coming in from serializable objects?
         try {
          FileInputStream fileIn = new FileInputStream("packages.ser");
          ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -64,7 +66,12 @@ public class ShippingStore implements Serializable {
         }
     }
 
-
+    /**
+     * addPackage add a packing into packages ArrayList according to type of package
+     * entered
+     * @param type takes in the type of package 
+     * @throws IOException 
+     */
     public void addPackage(String type) throws IOException {
         String typeL = type.toLowerCase();
         System.out.println("\n Please type description of package with the following pattern:");
@@ -142,6 +149,14 @@ public class ShippingStore implements Serializable {
         
     }
     
+    /**
+     * checkPackIn checks that the tracking number, specification, and mailing class
+     * entered were entered correctly
+     * @param trackNum tracking number of package 
+     * @param spec specification of package
+     * @param mailClass mailing class of package
+     * @return 
+     */
     private boolean checkPackIn(String trackNum, String spec, String mailClass){
         if (searchPackAL(trackNum) != -1) {
             System.out.println("Package Order already exists in database. \n");
@@ -176,9 +191,8 @@ public class ShippingStore implements Serializable {
     }
     
     /**
-     * Method showPackageOrer displays the current list of package orders in the Arraylist in no
-     * particular order.
-     *
+     * Method showPackageOrer displays the current list of package orders in the Arraylist 
+     * alphabetically according to tracking number
      */
     public void showPackageOrders(){
         //sort by tracking number here
@@ -235,6 +249,9 @@ public class ShippingStore implements Serializable {
 
     }    
     
+    /**
+     * showUsers displays all the users in the users ArrayList
+     */
     public void showUsers(){
         System.out.println(" -------------------------------------------------------------------------- ");
         System.out.println("| User Type | ID          | First Name | Last Name       | Other           |");
@@ -272,6 +289,9 @@ public class ShippingStore implements Serializable {
         System.out.println("--------------------------------------------------------------------------\n");
     }
     
+    /**
+     * showTransactions displays all transactions in trans ArrayList
+     */
     public void showTransactions() {
 
         System.out.println(" -------------------------------------------------------------------------- ");
@@ -293,6 +313,10 @@ public class ShippingStore implements Serializable {
 
     }
     
+    /**
+     * completeTransaction prompts user to complete a transaction, add it to 
+     * trans ArrayList, and delete package from packages ArrayList
+     */
     public void completeTransaction(){
        
         String packageNumber = ""; 
@@ -423,6 +447,12 @@ public class ShippingStore implements Serializable {
         //REMOVE packageNumber from package list
     }
     
+    /**
+     * searchPackAL searches through packages ArrayList to see if that tracking 
+     * number package exists
+     * @param trackNum tracking number entered by user
+     * @return index if package exists
+     */
     private int searchPackAL(String trackNum){
         int exist = -1;
         for(int i = 0; i < packages.size(); i++){
@@ -435,6 +465,10 @@ public class ShippingStore implements Serializable {
         return exist;
     }
     
+    /**
+     * searchPack is the public function that does the prompting if it does/doesn't exist
+     * @param trackNum tracking number of package
+     */
     public void searchPack(String trackNum){
         int index = searchPackAL(trackNum);
         if (index != -1) {
@@ -450,9 +484,7 @@ public class ShippingStore implements Serializable {
     }
     
     /**
-     * This method will remove an order from the <CODE>packageOrerList</CODE> ArrayList. It
-     * will remove the instance of an order that matches tracking number that was
-     * passed to this method. If no such order exists, it will produce an error message.
+     * deletePack deleted
      *
      * @param trackNum of object to be removed.
      */
@@ -467,6 +499,10 @@ public class ShippingStore implements Serializable {
         
     }
     
+    /**
+     * inputMSG is specific to the type of package type trying to be entered
+     * @param type package type
+     */
     private void inputMSG(String type){
         switch (type) {
             case "envelope":
@@ -493,6 +529,10 @@ public class ShippingStore implements Serializable {
         
     }
     
+    /**
+     * addUser adds a new user to the users ArrayList
+     * @param userInput type of user
+     */
     public void addUser(String userInput){
         int id;
         String fName, lName;
@@ -595,6 +635,11 @@ public class ShippingStore implements Serializable {
         }
     }
     
+    /**
+     * searchUserAL searches through users ArrayList to find a user
+     * @param ID ID of user
+     * @return index if user exists
+     */
     private int searchUserAL(int ID){
         int exist = -1;
         for(int i = 0; i < users.size(); i++){
@@ -611,6 +656,10 @@ public class ShippingStore implements Serializable {
         return exist;
     }
     
+    /**
+     * changeUser allows changes to any of users fields
+     * @param ID ID of user
+     */
 public void changeUser(int ID){
         int index = searchUserAL(ID);
         if(index != -1){
@@ -786,7 +835,10 @@ public void changeUser(int ID){
         }
     }
 }
-    
+    /**
+     * randUserId generates a random ID
+     * @return random ID 
+     */
     public int randUserId(){
         int max = 99999999;
         int min = 10000000;
@@ -797,6 +849,9 @@ public void changeUser(int ID){
         return id;
     }
     
+    /**
+     * write data from ArrayList packages, users, and trans into certain .ser files
+     */
     public void flush(){
         //serializing ArrayLists
         try {
